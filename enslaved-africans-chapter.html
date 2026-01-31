@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enslaved Africans in America - Interactive Chapter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #f5f5f5;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Main Content Area */
+        .content-area {
+            overflow-y: auto;
+            padding: 40px 50px;
+        }
+
+        /* Chapter Header */
+        .chapter-header {
+            border-bottom: 3px solid #3498db;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+
+        .chapter-header h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 15px;
+        }
+
+        .chapter-meta {
+            display: flex;
+            gap: 20px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .chapter-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Section Navigation */
+        .section-nav {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .section-nav h3 {
+            font-size: 1em;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+
+        .section-nav ul {
+            list-style: none;
+        }
+
+        .section-nav li {
+            margin: 8px 0;
+        }
+
+        .section-nav a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .section-nav a:hover {
+            color: #2980b9;
+        }
+
+        /* Content Sections */
+        .content-section {
+            margin-bottom: 50px;
+            scroll-margin-top: 20px;
+        }
+
+        .content-section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .content-section p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        /* Vocabulary Boxes */
+        .vocab-boxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .vocab-box {
+            background: #fff;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .vocab-box h4 {
+            color: #3498db;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .vocab-box p {
+            font-size: 0.95em;
+            margin: 0;
+        }
+
+        /* Media Placeholders */
+        .media-placeholder {
+            background: #ecf0f1;
+            border: 2px dashed #95a5a6;
+            border-radius: 8px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .media-placeholder .icon {
+            font-size: 3em;
+            color: #95a5a6;
+            margin-bottom: 15px;
+        }
+
+        .media-placeholder p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+
+        .media-placeholder.large {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Question Blocks */
+        .question-block {
+            background: #fff9e6;
+            border-left: 4px solid #f39c12;
+            padding: 25px;
+            margin: 40px 0;
+            border-radius: 4px;
+        }
+
+        .question-block h3 {
+            color: #e67e22;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .question-block .question-type {
+            display: inline-block;
+            background: #f39c12;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        .question-list {
+            list-style: none;
+            counter-reset: question-counter;
+        }
+
+        .question-list li {
+            counter-increment: question-counter;
+            margin: 15px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .question-list li:before {
+            content: counter(question-counter) ".";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #e67e22;
+        }
+
+        .question-list ul {
+            list-style: none;
+            margin-top: 10px;
+            padding-left: 15px;
+        }
+
+        .question-list ul li {
+            counter-increment: none;
+            padding-left: 0;
+            margin: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .question-list ul li:before {
+            content: none;
+        }
+
+        .question-list input[type="checkbox"] {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .question-list label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .open-question {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 15px 0;
+            min-height: 100px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+
+        .submit-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #2980b9;
+        }
+
+        /* Vada Chat Sidebar */
+        .vada-sidebar {
+            background: #2c3e50;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #ddd;
+        }
+
+        .vada-header {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .vada-header h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .vada-header p {
+            font-size: 0.9em;
+            color: #bdc3c7;
+            margin: 0;
+        }
+
+        .vada-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .vada-message {
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 85%;
+            line-height: 1.5;
+        }
+
+        .vada-message.assistant {
+            background: #3498db;
+            color: white;
+            align-self: flex-start;
+        }
+
+        .vada-message.user {
+            background: #ecf0f1;
+            color: #2c3e50;
+            align-self: flex-end;
+        }
+
+        .vada-input-area {
+            padding: 20px;
+            background: #34495e;
+            border-top: 1px solid #2c3e50;
+        }
+
+        .vada-input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .vada-input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-family: inherit;
+        }
+
+        .vada-send-button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .vada-send-button:hover {
+            background: #2980b9;
+        }
+
+        .vada-send-button:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        /* Vocabulary Section */
+        .vocab-section {
+            background: #e8f4f8;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .vocab-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .vocab-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .vocab-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #3498db;
+        }
+
+        .vocab-item strong {
+            color: #3498db;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .vada-sidebar {
+                display: none;
+            }
+
+            .content-area {
+                padding: 30px 25px;
+            }
+        }
+
+        /* Loading Indicator */
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Student Login Modal -->
+    <div id="loginModal" style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 40px; border-radius: 12px; max-width: 500px; width: 90%; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+            <h2 style="margin-bottom: 10px; color: #2c3e50;">Welcome to the Chapter</h2>
+            <p style="margin-bottom: 25px; color: #7f8c8d; line-height: 1.5;">Enter your name or student ID to get started. Your answers will be automatically saved and you can continue on any device.</p>
+            <input type="text" id="studentIdInput" placeholder="Enter your name or student ID" style="width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 6px; font-size: 1em; margin-bottom: 20px; font-family: inherit;">
+            <button onclick="loginStudent()" style="width: 100%; background: #3498db; color: white; border: none; padding: 15px; border-radius: 6px; font-size: 1.1em; cursor: pointer; font-weight: 600;">Start Chapter</button>
+            <p id="loginError" style="color: #e74c3c; margin-top: 15px; display: none; font-size: 0.9em;"></p>
+        </div>
+    </div>
+
+    <!-- Save Status Indicator -->
+    <div id="saveStatus" style="position: fixed; bottom: 20px; right: 20px; background: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: none; z-index: 9999; align-items: center; gap: 10px;">
+        <span id="saveStatusIcon">💾</span>
+        <span id="saveStatusText">Saving...</span>
+    </div>
+
+    <div class="container">
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Chapter Header -->
+            <div class="chapter-header">
+                <h1>Enslaved Africans in America</h1>
+                <div class="chapter-meta">
+                    <span>📚 US History</span>
+                    <span>⏱️ Estimated Time: 45-60 minutes</span>
+                    <span>📝 Sections: 5</span>
+                </div>
+            </div>
+
+            <!-- Section Navigation -->
+            <div class="section-nav">
+                <h3>Chapter Sections</h3>
+                <ul>
+                    <li><a href="#section-1">Introduction to Enslavement</a></li>
+                    <li><a href="#section-2">Fighting Against Slavery</a></li>
+                    <li><a href="#section-3">The Abolitionist Movement</a></li>
+                    <li><a href="#section-4">How Slavery Became a National Issue</a></li>
+                    <li><a href="#section-5">Key Vocabulary & Terms</a></li>
+                </ul>
+            </div>
+
+            <!-- Section 1: Introduction -->
+            <div class="content-section" id="section-1">
+                <h2>Introduction to Enslavement</h2>
+                
+                <div class="media-placeholder large">
+                    <div class="icon">🖼️</div>
+                    <p><strong>Media Placeholder: Ship Diagram</strong></p>
+                    <p>A plan showing how enslavers and human traffickers could fit the most enslaved humans for transport to be sold.</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Dimensions: 800x600px</p>
+                </div>
+
+                <p>Slavery in America began in the early 1600s and lasted until the mid-1800s. This involved the forced labor of Black people who were captured in Africa and brought to the United States to work on plantations against their will. These <strong>enslaved Africans</strong> were treated as property with no rights or freedoms of their own, living in harsh conditions and brutal treatment at the hands of their <strong>enslavers</strong>.</p>
+
+                <p>Before becoming enslaved, these Africans had worked in a full range of jobs (such as skilled artisans, farmers, traders, hunters, artists, scientists, etc.) Their talents and expertise were used by white <strong>human traffickers</strong> and <strong>enslavers</strong> to make a lot of money. It's important to recognize the rich and diverse backgrounds of enslaved Africans and the impact slavery had on their lives.</p>
+
+                <div class="vocab-boxes">
+                    <div class="vocab-box">
+                        <h4>enslaved African</h4>
+                        <p>An African forced into labor and treated as property to benefit white enslavers. Some history books call them "slaves". But slavery was something that was done to them rather than something they were.</p>
+                    </div>
+                    <div class="vocab-box">
+                        <h4>Enslaver</h4>
+                        <p>A person who forces other humans to work for no pay, to obey commands, and to lose their freedom. Some history books call them "slave owners". But you can't actually own another person.</p>
+                    </div>
+                    <div class="vocab-box">
+                        <h4>Human traffickers</h4>
+                        <p>People who capture and trade other humans for the purpose of enslavement or economic gain. Some history books call them "slave traders".</p>
+                    </div>
+                </div>
+
+                <!-- Questions for Section 1 -->
+                <div class="question-block">
+                    <span class="question-type">COMPREHENSION QUESTIONS</span>
+                    <h3>Check Your Understanding</h3>
+                    <ol class="question-list">
+                        <li>What was the main purpose of slavery in America as described in the text?
+                            <ul>
+                                <li><input type="checkbox" id="q1a" name="q1" value="A"><label for="q1a">A) To provide opportunities for skilled artisans</label></li>
+                                <li><input type="checkbox" id="q1b" name="q1" value="B"><label for="q1b">B) To offer freedom and rights to enslaved Africans</label></li>
+                                <li><input type="checkbox" id="q1c" name="q1" value="C"><label for="q1c">C) To force Black people to work on plantations against their will</label></li>
+                                <li><input type="checkbox" id="q1d" name="q1" value="D"><label for="q1d">D) To promote equality and diversity among different groups</label></li>
+                            </ul>
+                        </li>
+                        <li>According to the text, how were enslaved Africans treated by their enslavers?
+                            <ul>
+                                <li><input type="checkbox" id="q2a" name="q2" value="A"><label for="q2a">A) With respect and kindness</label></li>
+                                <li><input type="checkbox" id="q2b" name="q2" value="B"><label for="q2b">B) As equals with rights and freedoms</label></li>
+                                <li><input type="checkbox" id="q2c" name="q2" value="C"><label for="q2c">C) As property without rights or freedoms</label></li>
+                                <li><input type="checkbox" id="q2d" name="q2" value="D"><label for="q2d">D) With special privileges and rewards</label></li>
+                            </ul>
+                        </li>
+                        <li>Why were the talents and expertise of the enslaved Africans utilized by white human traffickers and enslavers?
+                            <ul>
+                                <li><input type="checkbox" id="q3a" name="q3" value="A"><label for="q3a">A) To provide enslaved Africans with better living conditions</label></li>
+                                <li><input type="checkbox" id="q3b" name="q3" value="B"><label for="q3b">B) To ensure a diverse workforce on plantations</label></li>
+                                <li><input type="checkbox" id="q3c" name="q3" value="C"><label for="q3c">C) To allow the Africans to retain their independence</label></li>
+                                <li><input type="checkbox" id="q3d" name="q3" value="D"><label for="q3d">D) To generate profits for the enslavers</label></li>
+                            </ul>
+                        </li>
+                        <li>What impact did enslavement have on the lives of the enslaved Africans, according to the text?
+                            <ul>
+                                <li><input type="checkbox" id="q4a" name="q4" value="A"><label for="q4a">A) It allowed them to pursue various careers</label></li>
+                                <li><input type="checkbox" id="q4b" name="q4" value="B"><label for="q4b">B) It provided them with opportunities to travel</label></li>
+                                <li><input type="checkbox" id="q4c" name="q4" value="C"><label for="q4c">C) It offered them freedom and rights</label></li>
+                                <li><input type="checkbox" id="q4d" name="q4" value="D"><label for="q4d">D) It subjected them to harsh conditions and brutal treatment</label></li>
+                            </ul>
+                        </li>
+                        <li>Which of the following best describes the variety of backgrounds enslaved Africans had before they were enslaved?
+                            <ul>
+                                <li><input type="checkbox" id="q5a" name="q5" value="A"><label for="q5a">A) They were all unskilled laborers</label></li>
+                                <li><input type="checkbox" id="q5b" name="q5" value="B"><label for="q5b">B) They were from the same African country</label></li>
+                                <li><input type="checkbox" id="q5c" name="q5" value="C"><label for="q5c">C) They held different jobs such as artisans, farmers, traders, and hunters</label></li>
+                                <li><input type="checkbox" id="q5d" name="q5" value="D"><label for="q5d">D) They all came from wealthy families</label></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="question-block">
+                    <span class="question-type">DISCUSSION PROMPT</span>
+                    <h3>Critical Thinking</h3>
+                    <p style="margin-bottom: 10px;">The Declaration of Independence, a founding document of the United States says, "all men are created equal". Did the founders seem to really believe this? Why or why not? Why weren't women included in the statement?</p>
+                    <textarea id="open1" rows="4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.95em; resize: vertical;" placeholder="Type your answer here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Section 2: Fighting Against Slavery -->
+            <div class="content-section" id="section-2">
+                <h2>Fighting Against Slavery</h2>
+
+                <div class="media-placeholder">
+                    <div class="icon">🖼️</div>
+                    <p><strong>Media Placeholder: Historical Print</strong></p>
+                    <p>"Horrid Massacre in Virginia" - Historical depiction of Nat Turner's rebellion</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Dimensions: 700x500px</p>
+                </div>
+
+                <p>Enslaved Africans didn't just accept their situation. When they saw opportunities to escape or to fight back, they did. For example, in 1822 a group of 9,000 people, led by a formerly enslaved person named <strong>Denmark Vesey</strong>, planned to attack several South Carolina cities to revolt against slavery. However, Vesey and thirty-five other people were executed before any revolt could take place. This event led to stronger laws to control the movement and education of freedmen and slaves.</p>
+
+                <p>In 1831, an enslaved African from Virginia named <strong>Nat Turner</strong> set out to free all enslaved Africans in America. He and a group of his followers killed about sixty enslavers and their families across Virginia. When they were stopped, Turner and about twenty of the others were hanged. After the revolt more than 100 innocent enslaved Africans were killed by fearful enslavers. Still, for many enslaved Africans, the name Nat Turner came to represent the courage to fight oppression by whatever means necessary.</p>
+
+                <!-- Questions for Section 2 -->
+                <div class="question-block">
+                    <span class="question-type">COMPREHENSION QUESTIONS</span>
+                    <h3>Check Your Understanding</h3>
+                    <ol class="question-list">
+                        <li>What sparked the event that led to stronger laws controlling the movement and education of freedmen and enslaved Africans in South Carolina in 1822?
+                            <ul>
+                                <li><input type="checkbox" id="q6a" name="q6" value="A"><label for="q6a">A) A group of abolitionists from the North</label></li>
+                                <li><input type="checkbox" id="q6b" name="q6" value="B"><label for="q6b">B) An attempted revolt led by Denmark Vesey</label></li>
+                                <li><input type="checkbox" id="q6c" name="q6" value="C"><label for="q6c">C) The escape of Nat Turner</label></li>
+                                <li><input type="checkbox" id="q6d" name="q6" value="D"><label for="q6d">D) The establishment of the Underground Railroad by Harriet Tubman</label></li>
+                            </ul>
+                        </li>
+                        <li>According to the text, who was Nat Turner and what did he attempt to do in 1831?
+                            <ul>
+                                <li><input type="checkbox" id="q7a" name="q7" value="A"><label for="q7a">A) An abolitionist who advocated for gradual emancipation</label></li>
+                                <li><input type="checkbox" id="q7b" name="q7" value="B"><label for="q7b">B) An enslaved African who led a rebellion to free all enslaved Africans</label></li>
+                                <li><input type="checkbox" id="q7c" name="q7" value="C"><label for="q7c">C) A southern writer who defended the economic benefits of slavery</label></li>
+                                <li><input type="checkbox" id="q7d" name="q7" value="D"><label for="q7d">D) A white southerner who supported the abolition of slavery</label></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="question-block">
+                    <span class="question-type">REFLECTION QUESTION</span>
+                    <h3>Think Deeply</h3>
+                    <p style="margin-bottom: 10px;">What were some examples of resistance against slavery mentioned in the text, and what were the outcomes of these acts of rebellion?</p>
+                    <textarea id="open2" rows="4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.95em; resize: vertical;" placeholder="Type your answer here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Section 3: The Abolitionist Movement -->
+            <div class="content-section" id="section-3">
+                <h2>The Abolitionist Movement</h2>
+
+                <div class="media-placeholder">
+                    <div class="icon">🖼️</div>
+                    <p><strong>Media Placeholder: Poster</strong></p>
+                    <p>Anti-slavery meetings poster advertising abolitionist gatherings</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Dimensions: 400x500px</p>
+                </div>
+
+                <p>In the northern states, some Americans viewed slavery as shameful. They believed it had no place in modern society. The <strong>abolitionist movement</strong> began in states like New York and Massachusetts. The leaders of the movement copied some of their strategies from British activists who had turned public opinion against human trafficking and enslavement.</p>
+
+                <p>Abolitionists were a divided group. On one side were people like Garrison, who called for an immediate end to slavery. If that were impossible, it was thought, then the North and South should part ways. John Brown believed an armed rebellion of enslaved people in the South was the quickest route to end human bondage in the United States. On the other side were <strong>moderates</strong> who believed that slavery should be phased out gradually to make sure the Southern states would not lose money too quickly.</p>
+
+                <div class="media-placeholder">
+                    <div class="icon">📸</div>
+                    <p><strong>Media Placeholder: Historical Photos</strong></p>
+                    <p>Frederick Douglass (left) and Harriet Tubman (right) portraits</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Two side-by-side images, each 300x400px</p>
+                </div>
+
+                <p>One of the most famous abolitionists was <strong>Harriet Tubman</strong>. She was born enslaved but escaped to freedom and risked her own life to help others escape through the <strong>Underground Railroad</strong> (a network of secret routes and safe houses).</p>
+
+                <p><strong>Frederick Douglass</strong> was another influential abolitionist. He was born into slavery as well but escaped to the North where he became a powerful speaker and writer.</p>
+
+                <p>Many white southerners felt the abolitionists were trying to harm their way of life. They weren't wrong about that; abolitionists believed it needed to be disrupted. The white farmers and plantation owners of the South would make far less money without unpaid slave labor for their plantations and businesses. Some southern writers even tried to convince people of the ridiculous view that free Africans in the north were treated worse than enslaved Africans in the South who worked on plantations. Many white northerners didn't like the abolitionists either. They needed goods from southern businesses. They felt the abolitionists' focus on human rights caused problems for them as they sought to make money by dealing with white businesses in the south.</p>
+
+                <!-- Questions for Section 3 -->
+                <div class="question-block">
+                    <span class="question-type">COMPREHENSION QUESTIONS</span>
+                    <h3>Check Your Understanding</h3>
+                    <ol class="question-list">
+                        <li>Why were the abolitionists a divided group, as mentioned in the text?
+                            <ul>
+                                <li><input type="checkbox" id="q8a" name="q8" value="A"><label for="q8a">A) Some believed in immediate abolition, while others favored a gradual end to slavery</label></li>
+                                <li><input type="checkbox" id="q8b" name="q8" value="B"><label for="q8b">B) They could not agree on the importance of education for freedmen</label></li>
+                                <li><input type="checkbox" id="q8c" name="q8" value="C"><label for="q8c">C) Their main disagreement was about the legality of the Underground Railroad</label></li>
+                                <li><input type="checkbox" id="q8d" name="q8" value="D"><label for="q8d">D) Abolitionists were primarily divided based on their attitude towards British activists</label></li>
+                            </ul>
+                        </li>
+                        <li>What was the Underground Railroad, and who played a significant role in its operation?
+                            <ul>
+                                <li><input type="checkbox" id="q9a" name="q9" value="A"><label for="q9a">A) A secret network of routes used to smuggle goods, led by John Brown</label></li>
+                                <li><input type="checkbox" id="q9b" name="q9" value="B"><label for="q9b">B) A safe haven for white plantation owners in the South</label></li>
+                                <li><input type="checkbox" id="q9c" name="q9" value="C"><label for="q9c">C) A tool for moderates to gradually end slavery in the Southern states</label></li>
+                                <li><input type="checkbox" id="q9d" name="q9" value="D"><label for="q9d">D) A network of routes and safe houses to help enslaved individuals escape, with Harriet Tubman being a key figure</label></li>
+                            </ul>
+                        </li>
+                        <li>How did the white southerners and northerners view the abolitionists differently, based on the information provided in the text?
+                            <ul>
+                                <li><input type="checkbox" id="q10a" name="q10" value="A"><label for="q10a">A) The white southerners admired the abolitionists' efforts, while the northerners opposed them due to economic interests</label></li>
+                                <li><input type="checkbox" id="q10b" name="q10" value="B"><label for="q10b">B) The white southerners believed the abolitionists were disrupting their way of life, while some northerners supported their cause for human rights</label></li>
+                                <li><input type="checkbox" id="q10c" name="q10" value="C"><label for="q10c">C) Both white southerners and northerners agreed on the necessity of immediate abolition proposed by John Brown</label></li>
+                                <li><input type="checkbox" id="q10d" name="q10" value="D"><label for="q10d">D) The white southerners and northerners viewed the abolitionists positively as they promoted peaceful coexistence between the North and South</label></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="question-block">
+                    <span class="question-type">REFLECTION QUESTION</span>
+                    <h3>Think Deeply</h3>
+                    <p style="margin-bottom: 10px;">Describe the different viewpoints within the abolitionist movement mentioned in the text.</p>
+                    <textarea id="open3" rows="4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.95em; resize: vertical;" placeholder="Type your answer here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Section 4: How Slavery Became a National Issue -->
+            <div class="content-section" id="section-4">
+                <h2>How Slavery Became a National Issue</h2>
+
+                <p>Obviously, slavery was an issue the entire time for those who were enslaved. But, how did it become an issue for the country as a whole?</p>
+
+                <p>As of 1819, the United States had eleven <strong>slave states</strong> (a state that could practice slavery) in the South and eleven <strong>free states</strong> (states that could not practice slavery) in the North. Power in the Senate was balanced between the North and the South. Missouri, which was located in the cotton-growing region, wanted to be admitted as a slave state. The addition of Missouri as the twelfth slave state would upset the balance of power.</p>
+
+                <div class="media-placeholder large">
+                    <div class="icon">🗺️</div>
+                    <p><strong>Media Placeholder: Historical Map</strong></p>
+                    <p>Political map showing free and slave states, circa 1820</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Dimensions: 900x600px</p>
+                </div>
+
+                <p>Congress had to consider this problem before deciding whether to let Missouri enter the Union as a state that allowed slavery.</p>
+
+                <p>If Missouri joined the Union, it would be the first slave state west of the Mississippi River. Northerners feared slavery would spread throughout the entire Louisiana region. They thought if Missouri joined the Union as a slave state, more would follow. Congress would be unable to stop the spread of slavery.</p>
+
+                <p>Southern states had a different point of view. If Missouri was admitted as a free state, Congress would be able to destroy the slave system in all the states. Northerners spoke out strongly against slavery. The <strong>antislavery movement</strong> was of great concern to owners of cotton plantations in the South. The Missouri problem was beginning to heat up, as two sections of the country with strong views debated the issue. Control of the Senate by northern or southern states would determine future government policies.</p>
+
+                <h3 style="margin-top: 30px; color: #2c3e50; font-size: 1.4em;">How Did Maine and Missouri Become States?</h3>
+
+                <p>The debate went on for several months. Then, by chance, Maine asked to be admitted to the Union in December of 1819. There was no question that Maine would be a free state because its constitution did not allow slavery. Maine provided a possible solution to the problem. A compromise was proposed. Missouri was to be allowed to enter the Union as a slave state. Maine would join as a free state. With twelve slave states and twelve free states, there would still be a balance of power in the Senate. In addition, slavery would not be allowed in any new states north of 36 degrees 30 minutes north latitude in the Louisiana Territory. Missouri was the only state to which this law did not apply.</p>
+
+                <div class="media-placeholder">
+                    <div class="icon">🗺️</div>
+                    <p><strong>Media Placeholder: Map</strong></p>
+                    <p>Missouri Compromise 1820 - showing the dividing line at 36°30'N</p>
+                    <p style="margin-top: 10px; font-size: 0.9em;">Dimensions: 700x500px</p>
+                </div>
+
+                <p>This <strong>Missouri Compromise</strong>, as it was called, was approved by Congress March 3, 1820. The Missouri Compromise had made southern plantation owners think that slavery was "safe" in the South.</p>
+
+                <!-- Questions for Section 4 -->
+                <div class="question-block">
+                    <span class="question-type">COMPREHENSION QUESTIONS</span>
+                    <h3>Check Your Understanding</h3>
+                    <ol class="question-list">
+                        <li>What issue arose in the United States in 1819, leading to the debate over the admission of Missouri as a state?
+                            <ul>
+                                <li><input type="checkbox" id="q11a" name="q11" value="A"><label for="q11a">A) Unbalanced power in the Senate</label></li>
+                                <li><input type="checkbox" id="q11b" name="q11" value="B"><label for="q11b">B) Spread of cotton plantations in the South</label></li>
+                                <li><input type="checkbox" id="q11c" name="q11" value="C"><label for="q11c">C) Conflict between free and slave states</label></li>
+                                <li><input type="checkbox" id="q11d" name="q11" value="D"><label for="q11d">D) Increase in population in the Louisiana Territory</label></li>
+                            </ul>
+                        </li>
+                        <li>Why did Northerners fear the admission of Missouri as a slave state?
+                            <ul>
+                                <li><input type="checkbox" id="q12a" name="q12" value="A"><label for="q12a">A) They were concerned about the spread of slavery in the Louisiana region</label></li>
+                                <li><input type="checkbox" id="q12b" name="q12" value="B"><label for="q12b">B) They wanted to increase the power of Congress</label></li>
+                                <li><input type="checkbox" id="q12c" name="q12" value="C"><label for="q12c">C) They supported the plantation owners in the South</label></li>
+                                <li><input type="checkbox" id="q12d" name="q12" value="D"><label for="q12d">D) They believed Missouri would become a free state</label></li>
+                            </ul>
+                        </li>
+                        <li>How did Maine provide a solution to the problem of admitting Missouri as a state?
+                            <ul>
+                                <li><input type="checkbox" id="q13a" name="q13" value="A"><label for="q13a">A) Maine proposed a compromise allowing Missouri to enter as a free state</label></li>
+                                <li><input type="checkbox" id="q13b" name="q13" value="B"><label for="q13b">B) Maine's constitution prohibited slavery, making it a free state</label></li>
+                                <li><input type="checkbox" id="q13c" name="q13" value="C"><label for="q13c">C) Maine supported the expansion of slavery in the South</label></li>
+                                <li><input type="checkbox" id="q13d" name="q13" value="D"><label for="q13d">D) Maine requested to be admitted with no restrictions</label></li>
+                            </ul>
+                        </li>
+                        <li>What was the outcome of the Missouri Compromise approved by Congress in 1820?
+                            <ul>
+                                <li><input type="checkbox" id="q14a" name="q14" value="A"><label for="q14a">A) Maine and Missouri both entered the Union as free states</label></li>
+                                <li><input type="checkbox" id="q14b" name="q14" value="B"><label for="q14b">B) The balance of power in the Senate was disrupted</label></li>
+                                <li><input type="checkbox" id="q14c" name="q14" value="C"><label for="q14c">C) Slavery was prohibited north of 36 degrees 30 minutes in the new states</label></li>
+                                <li><input type="checkbox" id="q14d" name="q14" value="D"><label for="q14d">D) Missouri was allowed to spread slavery throughout the Louisiana Territory</label></li>
+                            </ul>
+                        </li>
+                        <li>Why did southern plantation owners consider slavery to be "safe" in the South after the Missouri Compromise?
+                            <ul>
+                                <li><input type="checkbox" id="q15a" name="q15" value="A"><label for="q15a">A) The compromise resulted in the abolition of slavery in southern states</label></li>
+                                <li><input type="checkbox" id="q15b" name="q15" value="B"><label for="q15b">B) Congress had the power to enforce anti-slavery laws nationwide</label></li>
+                                <li><input type="checkbox" id="q15c" name="q15" value="C"><label for="q15c">C) The balance of power in the Senate favored the South</label></li>
+                                <li><input type="checkbox" id="q15d" name="q15" value="D"><label for="q15d">D) The Compromise allowed for the expansion of slavery in the North</label></li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="question-block">
+                    <span class="question-type">DISCUSSION PROMPTS</span>
+                    <h3>Think Critically</h3>
+                    <p style="margin-bottom: 10px;"><strong>Question 1:</strong> What issue did the Missouri Compromise (proposed in 1820) solve?</p>
+                    <textarea id="open4" rows="4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.95em; resize: vertical; margin-bottom: 20px;" placeholder="Type your answer here..."></textarea>
+                    <p style="margin: 20px 0 10px;"><strong>Question 2:</strong> How did the Missouri Compromise impact the balance of power in the Senate and the spread of slavery in the United States?</p>
+                    <textarea id="open5" rows="4" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; font-size: 0.95em; resize: vertical;" placeholder="Type your answer here..."></textarea>
+                </div>
+            </div>
+
+            <!-- Section 5: Key Vocabulary -->
+            <div class="vocab-section" id="section-5">
+                <h2>Key Vocabulary, Terms and Names</h2>
+                <div class="vocab-list">
+                    <div class="vocab-item">
+                        <strong>abolitionist movement</strong>
+                        A group of activists against human trafficking and enslavement
+                    </div>
+                    <div class="vocab-item">
+                        <strong>enslaved Africans</strong>
+                        An African forced into labor and treated as property to benefit white enslavers.
+                    </div>
+                    <div class="vocab-item">
+                        <strong>enslavers</strong>
+                        A person who forces other humans to work for no pay, to obey commands, and to lose their freedom.
+                    </div>
+                    <div class="vocab-item">
+                        <strong>human traffickers</strong>
+                        People who capture and trade other humans for the purpose of enslavement or economic gain.
+                    </div>
+                    <div class="vocab-item">
+                        <strong>Frederick Douglass</strong>
+                        An influential abolitionist who was born into slavery. He escaped to the North and became a powerful speaker and writer.
+                    </div>
+                    <div class="vocab-item">
+                        <strong>free states</strong>
+                        States that could not practice slavery
+                    </div>
+                    <div class="vocab-item">
+                        <strong>freedmen</strong>
+                        People who had been enslaved but were freed by escaping or for an exchange of money
+                    </div>
+                    <div class="vocab-item">
+                        <strong>Harriet Tubman</strong>
+                        Born enslaved but escaped to freedom and risked her own life to help others escape through the Underground Railroad
+                    </div>
+                    <div class="vocab-item">
+                        <strong>Missouri Compromise</strong>
+                        A compromise where Missouri was allowed to enter the Union as a slave state at the same time that Maine joined as a free state. Outlawed new slave states north of 36 degrees 30 minutes north latitude.
+                    </div>
+                    <div class="vocab-item">
+                        <strong>Nat Turner</strong>
+                        An enslaved African from Virginia who wanted to free all enslaved Africans in America. He and a group of his followers killed about sixty enslavers and their families across Virginia.
+                    </div>
+                    <div class="vocab-item">
+                        <strong>slave states</strong>
+                        States that could practice slavery
+                    </div>
+                    <div class="vocab-item">
+                        <strong>Underground Railroad</strong>
+                        A network of secret routes and safe houses to help people escape slavery
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Questions Button -->
+            <div style="text-align: center; margin: 40px 0; padding: 30px; background: #ecf0f1; border-radius: 8px;">
+                <h3 style="margin-bottom: 15px; color: #2c3e50;">Ready to Submit Your Answers?</h3>
+                <p style="margin-bottom: 20px; color: #7f8c8d;">Review your responses, then click below to open the submission form. Your answers will be prepared for you to copy and paste into the Google Form.</p>
+                <button class="submit-button" onclick="prepareSubmission()">📝 Prepare My Answers</button>
+                <div id="submissionPreview" style="display: none; margin-top: 20px; text-align: left; background: white; padding: 20px; border-radius: 8px; max-height: 400px; overflow-y: auto;"></div>
+                <button id="copyAnswersBtn" class="submit-button" style="display: none; margin-top: 15px;" onclick="copyAnswers()">📋 Copy All Answers</button>
+                <button id="openFormBtn" class="submit-button" style="display: none; margin-top: 15px;" onclick="openGoogleForm()">🔗 Open Google Form</button>
+            </div>
+
+        </div>
+
+        <!-- Vada AI Sidebar -->
+        <div class="vada-sidebar">
+            <div class="vada-header">
+                <h2>Vada AI Tutor</h2>
+                <p>Ask me anything about this chapter!</p>
+            </div>
+            
+            <div class="vada-messages" id="vadaMessages">
+                <div class="vada-message assistant">
+                    Hello! I'm Vada, your AI tutor for this chapter on Enslaved Africans in America. I've read all the content and I'm here to help you understand the material better. Feel free to ask me questions about anything you're reading!
+                </div>
+            </div>
+            
+            <div class="vada-input-area">
+                <div class="vada-input-container">
+                    <input 
+                        type="text" 
+                        class="vada-input" 
+                        id="vadaInput" 
+                        placeholder="Ask Vada a question..."
+                        onkeypress="handleVadaKeyPress(event)"
+                    >
+                    <button class="vada-send-button" id="vadaSendBtn" onclick="sendVadaMessage()">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - UPDATE THIS with your actual Vercel domain
+        const API_BASE_URL = 'https://your-project.vercel.app'; // TODO: Replace with your actual Vercel URL
+        
+        // Student session management
+        let currentStudentId = null;
+        let autoSaveInterval = null;
+        let hasUnsavedChanges = false;
+
+        // Vada AI Integration
+        const VADA_API_URL = 'https://api.anthropic.com/v1/messages';
+        
+        // Chapter content for Vada's context
+        const CHAPTER_CONTEXT = `You are Vada, an AI tutor helping students understand a chapter about Enslaved Africans in America. Here is the complete chapter content:
+
+INTRODUCTION:
+Slavery in America began in the early 1600s and lasted until the mid-1800s. This involved the forced labor of Black people who were captured in Africa and brought to the United States to work on plantations against their will. These enslaved Africans were treated as property with no rights or freedoms, living in harsh conditions and brutal treatment. Before enslavement, these Africans worked in various skilled jobs. Their talents were exploited by white human traffickers and enslavers for profit.
+
+Key terms:
+- enslaved African: An African forced into labor and treated as property (not "slaves")
+- Enslaver: A person who forces others to work for no pay (not "slave owners")
+- Human traffickers: People who capture and trade humans (not "slave traders")
+
+FIGHTING AGAINST SLAVERY:
+Enslaved Africans resisted when opportunities arose. In 1822, Denmark Vesey led 9,000 people planning to revolt in South Carolina, but he and 35 others were executed before the revolt could happen. This led to stricter laws controlling freedmen and slaves.
+
+In 1831, Nat Turner led a rebellion in Virginia to free all enslaved Africans. He and followers killed about 60 enslavers and their families. Turner and about 20 others were hanged, and over 100 innocent enslaved Africans were killed by fearful enslavers. Nat Turner became a symbol of courage against oppression.
+
+THE ABOLITIONISTS:
+Northern Americans viewed slavery as shameful. The abolitionist movement began in New York and Massachusetts, learning from British activists. Abolitionists were divided: some like Garrison wanted immediate abolition, John Brown believed in armed rebellion, while moderates favored gradual phase-out to protect Southern economies.
+
+Famous abolitionists:
+- Harriet Tubman: Born enslaved, escaped, and helped others through the Underground Railroad (secret routes and safe houses)
+- Frederick Douglass: Born enslaved, escaped North, became powerful speaker and writer
+
+White southerners saw abolitionists as threatening their way of life and economic interests. Many white northerners also opposed abolitionists because they needed Southern goods for their businesses.
+
+HOW SLAVERY BECAME A NATIONAL ISSUE:
+In 1819, the US had 11 slave states (South) and 11 free states (North), balanced in Senate power. Missouri wanted to join as a slave state, which would upset this balance. It would be the first slave state west of the Mississippi River. Northerners feared slavery would spread throughout Louisiana Territory.
+
+THE MISSOURI COMPROMISE:
+Maine requested admission as a free state in December 1819. Congress proposed a compromise: Missouri joins as slave state, Maine as free state, maintaining 12-12 balance. Slavery prohibited in new states north of 36°30'N latitude (except Missouri). Approved March 3, 1820. This made Southern plantation owners feel slavery was "safe" in the South.
+
+Your role as Vada:
+- Answer questions using Socratic method when appropriate
+- Help students think critically about the material
+- Connect concepts to broader themes of justice and human rights
+- Correct misconceptions gently
+- Encourage deeper understanding
+- Use the precise terminology from the chapter (enslaved Africans, not slaves; enslavers, not slave owners)
+- Be encouraging and supportive`;
+
+        let conversationHistory = [];
+
+        // ========================================
+        // STUDENT LOGIN & SAVE SYSTEM
+        // ========================================
+
+        async function loginStudent() {
+            const input = document.getElementById('studentIdInput');
+            const error = document.getElementById('loginError');
+            const studentId = input.value.trim();
+
+            if (!studentId) {
+                error.textContent = 'Please enter your name or student ID';
+                error.style.display = 'block';
+                return;
+            }
+
+            currentStudentId = studentId;
+            
+            // Hide login modal
+            document.getElementById('loginModal').style.display = 'none';
+            
+            // Try to load previous answers
+            await loadPreviousAnswers();
+            
+            // Start auto-save
+            startAutoSave();
+            
+            // Add change listeners
+            addChangeListeners();
+        }
+
+        async function loadPreviousAnswers() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/load-answers?studentId=${encodeURIComponent(currentStudentId)}`);
+                const result = await response.json();
+
+                if (result.found && result.data.answers) {
+                    const answers = result.data.answers;
+                    
+                    // Load multiple choice answers
+                    Object.keys(answers).forEach(key => {
+                        if (key.startsWith('q')) {
+                            const checkbox = document.getElementById(`${key}${answers[key]}`);
+                            if (checkbox) {
+                                checkbox.checked = true;
+                            }
+                        }
+                    });
+                    
+                    // Load open-ended answers
+                    ['open1', 'open2', 'open3', 'open4', 'open5'].forEach(id => {
+                        const textarea = document.getElementById(id);
+                        if (textarea && answers[id]) {
+                            textarea.value = answers[id];
+                        }
+                    });
+                    
+                    showSaveStatus('Loaded previous answers', '📂', false);
+                }
+            } catch (error) {
+                console.error('Error loading previous answers:', error);
+            }
+        }
+
+        function collectAllAnswers() {
+            const answers = {};
+            
+            // Collect multiple choice (only checked boxes)
+            for (let i = 1; i <= 15; i++) {
+                const checkbox = document.querySelector(`input[name="q${i}"]:checked`);
+                if (checkbox) {
+                    answers[`q${i}`] = checkbox.value;
+                }
+            }
+            
+            // Collect open-ended
+            ['open1', 'open2', 'open3', 'open4', 'open5'].forEach(id => {
+                const textarea = document.getElementById(id);
+                if (textarea && textarea.value.trim()) {
+                    answers[id] = textarea.value.trim();
+                }
+            });
+            
+            return answers;
+        }
+
+        async function saveAnswers(showStatus = true) {
+            if (!currentStudentId) return;
+            
+            if (showStatus) {
+                showSaveStatus('Saving...', '💾', true);
+            }
+            
+            try {
+                const answers = collectAllAnswers();
+                
+                const response = await fetch(`${API_BASE_URL}/api/save-answers`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        studentId: currentStudentId,
+                        answers: answers,
+                        completed: false
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    hasUnsavedChanges = false;
+                    if (showStatus) {
+                        showSaveStatus('All changes saved', '✓', false);
+                    }
+                }
+            } catch (error) {
+                console.error('Error saving answers:', error);
+                if (showStatus) {
+                    showSaveStatus('Save failed - will retry', '⚠️', false);
+                }
+            }
+        }
+
+        async function submitFinalAnswers() {
+            if (!currentStudentId) return;
+            
+            showSaveStatus('Submitting...', '📤', true);
+            
+            try {
+                const answers = collectAllAnswers();
+                
+                const response = await fetch(`${API_BASE_URL}/api/save-answers`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        studentId: currentStudentId,
+                        answers: answers,
+                        completed: true
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showSaveStatus('Submitted successfully!', '✓', false);
+                    alert('Your answers have been submitted successfully!');
+                }
+            } catch (error) {
+                console.error('Error submitting answers:', error);
+                alert('There was an error submitting your answers. Please try again.');
+            }
+        }
+
+        function showSaveStatus(text, icon, isLoading) {
+            const status = document.getElementById('saveStatus');
+            const statusText = document.getElementById('saveStatusText');
+            const statusIcon = document.getElementById('saveStatusIcon');
+            
+            statusText.textContent = text;
+            statusIcon.textContent = icon;
+            status.style.display = 'flex';
+            
+            if (!isLoading) {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function startAutoSave() {
+            // Save every 30 seconds
+            autoSaveInterval = setInterval(() => {
+                if (hasUnsavedChanges) {
+                    saveAnswers(false);
+                }
+            }, 30000);
+        }
+
+        function addChangeListeners() {
+            // Listen to all checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    hasUnsavedChanges = true;
+                });
+            });
+            
+            // Listen to all textareas
+            document.querySelectorAll('textarea').forEach(textarea => {
+                textarea.addEventListener('input', () => {
+                    hasUnsavedChanges = true;
+                });
+                
+                // Save when they leave a textarea
+                textarea.addEventListener('blur', () => {
+                    if (hasUnsavedChanges) {
+                        saveAnswers(true);
+                    }
+                });
+            });
+        }
+
+        // Handle Enter key in login
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('studentIdInput');
+            if (input) {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        loginStudent();
+                    }
+                });
+                input.focus();
+            }
+        });
+
+        // Save before page unload
+        window.addEventListener('beforeunload', (e) => {
+            if (hasUnsavedChanges) {
+                saveAnswers(false);
+            }
+        });
+
+        // ========================================
+        // EXISTING FUNCTIONS
+        // ========================================
+
+        async function sendVadaMessage() {
+            const input = document.getElementById('vadaInput');
+            const sendBtn = document.getElementById('vadaSendBtn');
+            const messagesDiv = document.getElementById('vadaMessages');
+            
+            const userMessage = input.value.trim();
+            if (!userMessage) return;
+
+            // Disable input while processing
+            input.disabled = true;
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<span class="loading"></span>';
+
+            // Add user message to chat
+            const userDiv = document.createElement('div');
+            userDiv.className = 'vada-message user';
+            userDiv.textContent = userMessage;
+            messagesDiv.appendChild(userDiv);
+            
+            // Clear input
+            input.value = '';
+            
+            // Scroll to bottom
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // Build conversation history
+            conversationHistory.push({
+                role: 'user',
+                content: userMessage
+            });
+
+            try {
+                // Call Claude API
+                const response = await fetch(VADA_API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'anthropic-version': '2023-06-01'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1000,
+                        system: CHAPTER_CONTEXT,
+                        messages: conversationHistory
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.content && data.content[0]) {
+                    const assistantMessage = data.content[0].text;
+                    
+                    // Add to conversation history
+                    conversationHistory.push({
+                        role: 'assistant',
+                        content: assistantMessage
+                    });
+
+                    // Display assistant message
+                    const assistantDiv = document.createElement('div');
+                    assistantDiv.className = 'vada-message assistant';
+                    assistantDiv.textContent = assistantMessage;
+                    messagesDiv.appendChild(assistantDiv);
+                    
+                    // Scroll to bottom
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }
+            } catch (error) {
+                console.error('Error calling Vada:', error);
+                const errorDiv = document.createElement('div');
+                errorDiv.className = 'vada-message assistant';
+                errorDiv.textContent = "I'm having trouble connecting right now. Please try again in a moment.";
+                messagesDiv.appendChild(errorDiv);
+            } finally {
+                // Re-enable input
+                input.disabled = false;
+                sendBtn.disabled = false;
+                sendBtn.textContent = 'Send';
+                input.focus();
+            }
+        }
+
+        function handleVadaKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendVadaMessage();
+            }
+        }
+
+        function openGoogleForm() {
+            // TODO: Replace with actual Google Form URL
+            alert('Google Form integration: Replace this with your actual Google Form URL in the openGoogleForm() function.');
+            // window.open('YOUR_GOOGLE_FORM_URL_HERE', '_blank');
+        }
+
+        function prepareSubmission() {
+            const preview = document.getElementById('submissionPreview');
+            const copyBtn = document.getElementById('copyAnswersBtn');
+            const formBtn = document.getElementById('openFormBtn');
+            
+            const answers = collectAllAnswers();
+            let allAnswers = [];
+            
+            // Format multiple choice answers
+            for (let i = 1; i <= 15; i++) {
+                if (answers[`q${i}`]) {
+                    allAnswers.push(`Question ${i}: ${answers[`q${i}`]}`);
+                }
+            }
+            
+            // Format open-ended answers
+            const openEnded = [
+                { id: 'open1', label: 'Declaration of Independence Discussion' },
+                { id: 'open2', label: 'Resistance Against Slavery' },
+                { id: 'open3', label: 'Abolitionist Movement Viewpoints' },
+                { id: 'open4', label: 'Missouri Compromise Issue' },
+                { id: 'open5', label: 'Missouri Compromise Impact' }
+            ];
+            
+            openEnded.forEach(item => {
+                if (answers[item.id]) {
+                    allAnswers.push(`\n${item.label}:\n${answers[item.id]}`);
+                }
+            });
+            
+            if (allAnswers.length === 0) {
+                alert('Please answer at least one question before submitting.');
+                return;
+            }
+            
+            // Display preview
+            const formattedAnswers = allAnswers.join('\n\n');
+            preview.innerHTML = `<h4 style="margin-bottom: 15px;">Your Answers:</h4><pre style="white-space: pre-wrap; font-family: inherit; font-size: 0.9em; line-height: 1.6;">${formattedAnswers}</pre>`;
+            preview.style.display = 'block';
+            copyBtn.style.display = 'inline-block';
+            formBtn.style.display = 'inline-block';
+            
+            // Store for copying
+            window.studentAnswers = formattedAnswers;
+            
+            // Mark as completed in the system
+            submitFinalAnswers();
+        }
+
+        function copyAnswers() {
+            if (window.studentAnswers) {
+                navigator.clipboard.writeText(window.studentAnswers).then(() => {
+                    const btn = document.getElementById('copyAnswersBtn');
+                    const originalText = btn.textContent;
+                    btn.textContent = '✓ Copied!';
+                    btn.style.background = '#27ae60';
+                    setTimeout(() => {
+                        btn.textContent = originalText;
+                        btn.style.background = '#3498db';
+                    }, 2000);
+                }).catch(err => {
+                    alert('Could not copy to clipboard. Please select and copy the text manually.');
+                });
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('.section-nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+</html>
