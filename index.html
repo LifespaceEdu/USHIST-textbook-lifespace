@@ -19,19 +19,20 @@
         }
 
         .container {
-            display: grid;
-            grid-template-columns: 1fr 380px;
+            display: block;
             height: 100vh;
             max-width: 1400px;
             margin: 0 auto;
             background: white;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
         }
 
         /* Main Content Area */
         .content-area {
             overflow-y: auto;
             padding: 40px 50px;
+            height: 100vh;
         }
 
         /* Chapter Header */
@@ -269,12 +270,53 @@
             background: #2980b9;
         }
 
-        /* Vada Chat Sidebar */
+        /* Vada Chat Overlay */
         .vada-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
             background: #2c3e50;
             display: flex;
             flex-direction: column;
-            border-left: 1px solid #ddd;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+            transition: right 0.3s ease;
+            z-index: 9998;
+        }
+
+        .vada-sidebar.open {
+            right: 0;
+        }
+
+        /* Vada Toggle Button */
+        .vada-toggle-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #3498db;
+            color: white;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .vada-toggle-btn:hover {
+            transform: scale(1.1);
+            background: #2980b9;
+        }
+
+        .vada-toggle-btn.active {
+            background: #e74c3c;
         }
 
         .vada-header {
@@ -394,17 +436,18 @@
         }
 
         /* Responsive Design */
-        @media (max-width: 1024px) {
-            .container {
-                grid-template-columns: 1fr;
+        @media (max-width: 768px) {
+            .content-area {
+                padding: 30px 25px;
             }
 
             .vada-sidebar {
-                display: none;
+                width: 100%;
+                right: -100%;
             }
 
-            .content-area {
-                padding: 30px 25px;
+            .vada-sidebar.open {
+                right: 0;
             }
         }
 
@@ -437,10 +480,15 @@
     </div>
 
     <!-- Save Status Indicator -->
-    <div id="saveStatus" style="position: fixed; bottom: 20px; right: 20px; background: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: none; z-index: 9999; align-items: center; gap: 10px;">
+    <div id="saveStatus" style="position: fixed; bottom: 20px; left: 20px; background: white; padding: 12px 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: none; z-index: 9999; align-items: center; gap: 10px;">
         <span id="saveStatusIcon">💾</span>
         <span id="saveStatusText">Saving...</span>
     </div>
+
+    <!-- Vada Toggle Button -->
+    <button id="vadaToggleBtn" class="vada-toggle-btn" onclick="toggleVada()">
+        💬
+    </button>
 
     <div class="container">
         <!-- Main Content Area -->
@@ -1135,7 +1183,25 @@ Your role as Vada:
         });
 
         // ========================================
-        // EXISTING FUNCTIONS
+        // VADA TOGGLE
+        // ========================================
+
+        function toggleVada() {
+            const sidebar = document.querySelector('.vada-sidebar');
+            const toggleBtn = document.getElementById('vadaToggleBtn');
+            
+            sidebar.classList.toggle('open');
+            toggleBtn.classList.toggle('active');
+            
+            if (sidebar.classList.contains('open')) {
+                toggleBtn.textContent = '✕';
+            } else {
+                toggleBtn.textContent = '💬';
+            }
+        }
+
+        // ========================================
+        // VADA AI INTEGRATION
         // ========================================
 
         async function sendVadaMessage() {
